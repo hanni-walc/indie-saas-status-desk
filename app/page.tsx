@@ -10,6 +10,7 @@ import {
   LAUNCH,
   V2,
 } from '../lib/product';
+import { withBasePath } from "@/lib/site-path";
 
 const snapshot = buildStatusSnapshot(sampleMonitors, sampleIncidents);
 const copy = buildPublicStatusCopy(sampleMonitors, sampleIncidents);
@@ -24,10 +25,10 @@ export default function HomePage() {
           {WEDGE} Built for {BUYER} who want a status page that looks trustworthy on day one.
         </p>
         <div className="row">
-          <Link className="button" href="/app">
+          <Link className="button" href={withBasePath('/app')}>
             Open dashboard
           </Link>
-          <Link className="ghost" href="/status/demo-saas">
+          <Link className="ghost" href={withBasePath('/status/demo-saas')}>
             View public status page
           </Link>
         </div>

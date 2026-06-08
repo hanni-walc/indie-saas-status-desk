@@ -23,6 +23,10 @@ export async function generateMetadata({ params }: PublicStatusPageProps): Promi
   };
 }
 
+export function generateStaticParams() {
+  return [{ slug: 'all-systems-go' }];
+}
+
 export default async function PublicStatusPage({ params }: PublicStatusPageProps) {
   const { slug } = await params;
   const copy = buildStatusPageCopy(slug, sampleMonitors, sampleIncidents);

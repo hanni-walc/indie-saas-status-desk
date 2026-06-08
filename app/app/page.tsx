@@ -1,4 +1,5 @@
 import { buildStatusSnapshot, sampleIncidents, sampleMonitors } from '../../lib/product';
+import { withBasePath } from "@/lib/site-path";
 
 const snapshot = buildStatusSnapshot(sampleMonitors, sampleIncidents);
 
@@ -10,8 +11,8 @@ export default function DashboardPage() {
         <h1>Run the incident desk without chaos.</h1>
         <p className="lead">Track monitors, publish updates, and keep subscribers informed from one clean workspace.</p>
         <div className="row">
-          <a className="button" href="/app/incidents">Review incidents</a>
-          <a className="ghost" href="/app/monitors">Check monitors</a>
+          <a className="button" href={withBasePath('/app/incidents')}>Review incidents</a>
+          <a className="ghost" href={withBasePath('/app/monitors')}>Check monitors</a>
         </div>
       </section>
 

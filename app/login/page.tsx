@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { withBasePath } from "@/lib/site-path";
 
 export default function LoginPage() {
   return (
@@ -21,10 +22,10 @@ export default function LoginPage() {
           </label>
         </div>
         <div className="row" style={{ marginTop: 16 }}>
-          <Link className="button" href="/app">
+          <Link className="button" href={withBasePath('/app')}>
             Continue
           </Link>
-          <Link className="ghost" href="/">
+          <Link className="ghost" href={withBasePath('/')}>
             Back to marketing site
           </Link>
         </div>
