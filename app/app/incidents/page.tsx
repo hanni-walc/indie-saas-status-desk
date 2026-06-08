@@ -1,26 +1,41 @@
-import { buildIncidentBrief, sampleIncidents } from '../../../lib/product';
+import { buildIncidentWorkspace, sampleIncidents } from '../../../lib/status-desk';
 
 export default function IncidentsPage() {
   return (
-    <main className="shell">
+    <main className="shell page-stack">
       <section className="frame hero">
         <p className="eyebrow">Incidents</p>
         <h1>Publish updates that are calm, clear, and credible.</h1>
-        <p className="lead">Each incident becomes a clean timeline with a next step, not a noisy support thread.</p>
+        <p className="lead">
+          Each incident becomes a structured timeline, a customer-facing summary, and a next step the team can actually
+          execute.
+        </p>
       </section>
 
       <section className="grid cols-2">
         {sampleIncidents.map((incident) => {
-          const brief = buildIncidentBrief(incident);
+          const workspace = buildIncidentWorkspace(incident);
           return (
             <article key={incident.id} className="card">
-              <p className="kicker">{incident.severity}</p>
-              <h2>{brief.title}</h2>
-              <p className="muted">{brief.summary}</p>
-              <ul className="list">
-                {brief.timeline.map((step) => <li key={step}>{step}</li>)}
+              <div className="stack-item">
+                <div>
+                  <p className="kicker">{incident.severity}</p>
+                  <h2>{workspace.title}</h2>
+                </div>
+                <span className={`status-chip status-${workspace.publishState === 'ready' ? 'green' : 'watch'}`}>
+                  {workspace.publishState}
+                </span>
+              </div>
+              <p className="muted">{incident.summary}</p>
+              <p className="muted">Audience: {workspace.audience}</p>
+              <p className="muted">{workspace.latestUpdate}</p>
+              <div className="divider" />
+              <ul className="timeline">
+                {workspace.timeline.map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
               </ul>
-              <p className="muted">{brief.nextStep}</p>
+              <p className="muted">Next step: {workspace.nextStep}</p>
             </article>
           );
         })}

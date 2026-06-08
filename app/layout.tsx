@@ -1,5 +1,5 @@
-import "./globals.css";
-import { TITLE, PROMISE } from '../lib/product';
+import './globals.css';
+import { PROMISE, TITLE } from '../lib/product';
 
 export const metadata = {
   title: TITLE,

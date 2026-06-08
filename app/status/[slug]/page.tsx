@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import {
-  buildIncidentBrief,
-  buildStatusPageCopy,
-  buildStatusSnapshot,
+  buildIncidentWorkspace,
+  buildDeskSummary,
+  buildMonitorBoard,
+  buildSubscriberBoard,
   sampleIncidents,
   sampleMonitors,
-} from '../../../lib/product';
+  sampleSubscribers,
+} from '../../../lib/status-desk';
 
 type PublicStatusPageProps = {
   params: Promise<{
@@ -15,11 +17,10 @@ type PublicStatusPageProps = {
 
 export async function generateMetadata({ params }: PublicStatusPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const copy = buildStatusPageCopy(slug, sampleMonitors, sampleIncidents);
 
   return {
-    title: `${copy.boardName} status`,
-    description: copy.body,
+    title: `${slug.replace(/[-_]+/g, ' ')} status`,
+    description: 'Live public incident updates with subscriber notifications and monitor health at a glance.',
   };
 }
 
@@ -29,49 +30,50 @@ export function generateStaticParams() {
 
 export default async function PublicStatusPage({ params }: PublicStatusPageProps) {
   const { slug } = await params;
-  const copy = buildStatusPageCopy(slug, sampleMonitors, sampleIncidents);
-  const snapshot = buildStatusSnapshot(sampleMonitors, sampleIncidents);
+  const summary = buildDeskSummary(sampleMonitors, sampleIncidents, sampleSubscribers);
+  const monitorBoard = buildMonitorBoard(sampleMonitors);
+  const subscriberBoard = buildSubscriberBoard(sampleSubscribers);
   const activeIncident = sampleIncidents.find((incident) => incident.status !== 'resolved');
-  const incidentBrief = activeIncident ? buildIncidentBrief(activeIncident) : null;
+  const incidentWorkspace = activeIncident ? buildIncidentWorkspace(activeIncident) : null;
 
   return (
-    <main className="shell">
+    <main className="shell page-stack">
       <section className="frame hero">
         <p className="eyebrow">Public status</p>
-        <h1>{copy.headline}</h1>
+        <h1>{slug.replace(/[-_]+/g, ' ')} is {summary.overallState}</h1>
         <p className="lead">
-          A customer-facing status page for {copy.boardName} that stays calm, honest, and easy to scan on mobile.
+          A customer-facing status page that stays calm, honest, and easy to scan on mobile. Subscribers can follow
+          updates without emailing support.
         </p>
-        <div className="row">
-          <span className="pill">Slug: {copy.slug}</span>
-          <span className="pill">{snapshot.overall}</span>
-          <span className="pill">{snapshot.uptimeAverage.toFixed(2)}% uptime</span>
+        <div className="chip-row">
+          <span className="pill">{summary.averageUptime}% uptime</span>
+          <span className="pill">{summary.activeIncidents} active incident</span>
+          <span className="pill">{subscriberBoard.totalSubscribers} subscribers</span>
+          <span className="pill">Slug: {slug}</span>
         </div>
       </section>
 
       <section className="grid cols-3">
         <article className="card">
           <p className="kicker">Status summary</p>
-          <p className="muted">{copy.body}</p>
+          <p className="muted">{summary.headline}</p>
         </article>
         <article className="card">
           <p className="kicker">Trust signals</p>
-          <div>
-            {copy.badges.map((badge) => (
-              <span key={badge} className="pill">
-                {badge}
-              </span>
-            ))}
-          </div>
+          <ul className="checklist compact">
+            <li>{monitorBoard.healthyMonitors}/{monitorBoard.rows.length} monitors healthy</li>
+            <li>{summary.averageUptime}% average uptime</li>
+            <li>{subscriberBoard.primarySegment} gets instant updates</li>
+          </ul>
         </article>
         <article className="card">
-          <p className="kicker">Next action</p>
-          <h2>{copy.cta}</h2>
-          <p className="muted">Customers can subscribe once and get every future incident update.</p>
+          <p className="kicker">Call to action</p>
+          <h2>Subscribe for email alerts and incident updates.</h2>
+          <p className="muted">The public page doubles as a trust-building conversion point.</p>
         </article>
       </section>
 
-      <section className="grid cols-2" style={{ marginTop: 16 }}>
+      <section className="grid cols-2">
         <article className="card">
           <p className="kicker">Monitors</p>
           <table className="table">
@@ -79,17 +81,20 @@ export default async function PublicStatusPage({ params }: PublicStatusPageProps
               <tr>
                 <th>Monitor</th>
                 <th>Status</th>
-                <th>Uptime</th>
+                <th>Latency</th>
               </tr>
             </thead>
             <tbody>
-              {sampleMonitors.map((monitor) => (
+              {monitorBoard.rows.map((monitor) => (
                 <tr key={monitor.name}>
                   <td>
                     <strong>{monitor.name}</strong>
+                    <p className="muted">{monitor.route}</p>
                   </td>
-                  <td>{monitor.status}</td>
-                  <td>{monitor.uptimePct}%</td>
+                  <td>
+                    <span className={`status-chip status-${monitor.alertLevel}`}>{monitor.statusLabel}</span>
+                  </td>
+                  <td>{monitor.latencyLabel}</td>
                 </tr>
               ))}
             </tbody>
@@ -97,16 +102,25 @@ export default async function PublicStatusPage({ params }: PublicStatusPageProps
         </article>
         <article className="card">
           <p className="kicker">Current incident</p>
-          {incidentBrief ? (
+          {incidentWorkspace ? (
             <>
-              <h2>{incidentBrief.title}</h2>
-              <p className="muted">{incidentBrief.summary}</p>
-              <ul className="list">
-                {incidentBrief.timeline.map((step) => (
+              <div className="stack-item">
+                <div>
+                  <h2>{incidentWorkspace.title}</h2>
+                  <p className="muted">{incidentWorkspace.severityLabel}</p>
+                </div>
+                <span className={`status-chip status-${incidentWorkspace.publishState === 'ready' ? 'green' : 'watch'}`}>
+                  {incidentWorkspace.publishState}
+                </span>
+              </div>
+              <p className="muted">{incidentWorkspace.audience}</p>
+              <p className="muted">{incidentWorkspace.latestUpdate}</p>
+              <ul className="timeline">
+                {incidentWorkspace.timeline.map((step) => (
                   <li key={step}>{step}</li>
                 ))}
               </ul>
-              <p className="muted">{incidentBrief.nextStep}</p>
+              <p className="muted">{incidentWorkspace.nextStep}</p>
             </>
           ) : (
             <p className="muted">No active incidents right now.</p>
