@@ -1,18 +1,46 @@
-export default function RoutePage() {
+import { buildStatusSnapshot, sampleIncidents, sampleMonitors } from '../../lib/product';
+
+const snapshot = buildStatusSnapshot(sampleMonitors, sampleIncidents);
+
+export default function DashboardPage() {
   return (
     <main className="shell">
       <section className="frame hero">
-        <p className="eyebrow">Route</p>
-        <h1>Page scaffold</h1>
-        <p className="lead">This route exists so the repo is structurally complete and ready for a real backend implementation.</p>
+        <p className="eyebrow">Dashboard</p>
+        <h1>Run the incident desk without chaos.</h1>
+        <p className="lead">Track monitors, publish updates, and keep subscribers informed from one clean workspace.</p>
         <div className="row">
-          <a className="button" href="/app">Back to dashboard</a>
-          <a className="ghost" href="/">Open landing page</a>
+          <a className="button" href="/app/incidents">Review incidents</a>
+          <a className="ghost" href="/app/monitors">Check monitors</a>
         </div>
       </section>
-      <section className="card">
-        <p className="kicker">Implementation note</p>
-        <p className="muted">Replace this scaffold with route-specific behavior, forms, or detail views as the product is implemented.</p>
+
+      <section className="stats">
+        <div className="stat"><strong>{snapshot.overall}</strong><span className="muted">system state</span></div>
+        <div className="stat"><strong>{snapshot.monitorCount}</strong><span className="muted">monitors</span></div>
+        <div className="stat"><strong>{snapshot.healthyMonitors}</strong><span className="muted">healthy</span></div>
+        <div className="stat"><strong>{snapshot.activeIncidents}</strong><span className="muted">active incidents</span></div>
+      </section>
+
+      <section className="grid cols-2" style={{ marginTop: 16 }}>
+        <article className="card">
+          <p className="kicker">Today</p>
+          <h2>One active incident, one resolved postmortem.</h2>
+          <ul className="list">
+            <li>Open the latest incident update.</li>
+            <li>Verify the public status page is still honest.</li>
+            <li>Send the next subscriber email once the window closes.</li>
+          </ul>
+        </article>
+        <article className="card">
+          <p className="kicker">Operations</p>
+          <div>
+            <span className="pill">incident triage</span>
+            <span className="pill">status publishing</span>
+            <span className="pill">subscriber updates</span>
+            <span className="pill">postmortem archive</span>
+          </div>
+        </article>
       </section>
     </main>
   );

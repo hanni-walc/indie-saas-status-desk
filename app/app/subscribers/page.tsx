@@ -1,18 +1,30 @@
-export default function RoutePage() {
+export default function SubscribersPage() {
   return (
     <main className="shell">
       <section className="frame hero">
-        <p className="eyebrow">Route</p>
-        <h1>Page scaffold</h1>
-        <p className="lead">This route exists so the repo is structurally complete and ready for a real backend implementation.</p>
-        <div className="row">
-          <a className="button" href="/app">Back to dashboard</a>
-          <a className="ghost" href="/">Open landing page</a>
-        </div>
+        <p className="eyebrow">Subscribers</p>
+        <h1>Keep customers informed without manual chaos.</h1>
+        <p className="lead">A simple subscriber workflow for founders who need trustworthy incident email updates.</p>
       </section>
-      <section className="card">
-        <p className="kicker">Implementation note</p>
-        <p className="muted">Replace this scaffold with route-specific behavior, forms, or detail views as the product is implemented.</p>
+
+      <section className="grid cols-2">
+        <article className="card">
+          <p className="kicker">Subscriber groups</p>
+          <ul className="list">
+            <li>All customers</li>
+            <li>Enterprise contacts</li>
+            <li>Status page watchers</li>
+            <li>Internal ops team</li>
+          </ul>
+        </article>
+        <article className="card">
+          <p className="kicker">Delivery settings</p>
+          <ul className="list">
+            <li>Email only for v1</li>
+            <li>Custom domain support</li>
+            <li>Quiet hours for non-critical alerts</li>
+          </ul>
+        </article>
       </section>
     </main>
   );

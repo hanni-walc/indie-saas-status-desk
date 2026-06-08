@@ -1,8 +1,9 @@
 import "./globals.css";
+import { TITLE, PROMISE } from '../lib/product';
 
 export const metadata = {
-  title: "Money-Making Project",
-  description: "A polished product-ready SaaS starter.",
+  title: TITLE,
+  description: PROMISE,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

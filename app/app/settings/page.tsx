@@ -1,18 +1,30 @@
-export default function RoutePage() {
+export default function SettingsPage() {
   return (
     <main className="shell">
       <section className="frame hero">
-        <p className="eyebrow">Route</p>
-        <h1>Page scaffold</h1>
-        <p className="lead">This route exists so the repo is structurally complete and ready for a real backend implementation.</p>
-        <div className="row">
-          <a className="button" href="/app">Back to dashboard</a>
-          <a className="ghost" href="/">Open landing page</a>
-        </div>
+        <p className="eyebrow">Settings</p>
+        <h1>Brand the status page to match the product.</h1>
+        <p className="lead">Keep the public page premium with domain, colors, and incident email templates.</p>
       </section>
-      <section className="card">
-        <p className="kicker">Implementation note</p>
-        <p className="muted">Replace this scaffold with route-specific behavior, forms, or detail views as the product is implemented.</p>
+
+      <section className="grid cols-2">
+        <article className="card">
+          <p className="kicker">Branding</p>
+          <ul className="list">
+            <li>Logo upload</li>
+            <li>Accent color</li>
+            <li>Custom domain</li>
+            <li>Footer trust copy</li>
+          </ul>
+        </article>
+        <article className="card">
+          <p className="kicker">Notifications</p>
+          <ul className="list">
+            <li>Incident start email</li>
+            <li>Resolution email</li>
+            <li>Subscriber digest</li>
+          </ul>
+        </article>
       </section>
     </main>
   );

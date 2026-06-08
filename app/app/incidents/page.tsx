@@ -1,18 +1,29 @@
-export default function RoutePage() {
+import { buildIncidentBrief, sampleIncidents } from '../../../lib/product';
+
+export default function IncidentsPage() {
   return (
     <main className="shell">
       <section className="frame hero">
-        <p className="eyebrow">Route</p>
-        <h1>Page scaffold</h1>
-        <p className="lead">This route exists so the repo is structurally complete and ready for a real backend implementation.</p>
-        <div className="row">
-          <a className="button" href="/app">Back to dashboard</a>
-          <a className="ghost" href="/">Open landing page</a>
-        </div>
+        <p className="eyebrow">Incidents</p>
+        <h1>Publish updates that are calm, clear, and credible.</h1>
+        <p className="lead">Each incident becomes a clean timeline with a next step, not a noisy support thread.</p>
       </section>
-      <section className="card">
-        <p className="kicker">Implementation note</p>
-        <p className="muted">Replace this scaffold with route-specific behavior, forms, or detail views as the product is implemented.</p>
+
+      <section className="grid cols-2">
+        {sampleIncidents.map((incident) => {
+          const brief = buildIncidentBrief(incident);
+          return (
+            <article key={incident.id} className="card">
+              <p className="kicker">{incident.severity}</p>
+              <h2>{brief.title}</h2>
+              <p className="muted">{brief.summary}</p>
+              <ul className="list">
+                {brief.timeline.map((step) => <li key={step}>{step}</li>)}
+              </ul>
+              <p className="muted">{brief.nextStep}</p>
+            </article>
+          );
+        })}
       </section>
     </main>
   );
