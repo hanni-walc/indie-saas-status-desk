@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {
   buildPublicStatusCopy,
   buildStatusSnapshot,
@@ -23,8 +24,12 @@ export default function HomePage() {
           {WEDGE} Built for {BUYER} who want a status page that looks trustworthy on day one.
         </p>
         <div className="row">
-          <a className="button" href="/app">Open dashboard</a>
-          <a className="ghost" href="/status/demo-saas">View public status page</a>
+          <Link className="button" href="/app">
+            Open dashboard
+          </Link>
+          <Link className="ghost" href="/status/demo-saas">
+            View public status page
+          </Link>
         </div>
       </section>
 

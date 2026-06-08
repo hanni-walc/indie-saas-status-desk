@@ -30,6 +30,11 @@ export type PublicStatusCopy = {
   cta: string;
 };
 
+export type StatusPageCopy = PublicStatusCopy & {
+  boardName: string;
+  slug: string;
+};
+
 export type IncidentBrief = {
   title: string;
   summary: string;
@@ -138,6 +143,46 @@ export function buildIncidentBrief(incident: Incident): IncidentBrief {
     summary: incident.summary,
     timeline: incident.timeline,
     nextStep: incident.nextStep,
+  };
+}
+
+export function formatStatusBoardName(slug: string): string {
+  const cleaned = slug
+    .trim()
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ');
+
+  if (!cleaned) {
+    return 'Status Board';
+  }
+
+  const titleCaseWords = cleaned.split(' ').map((word) => {
+    const lowerWord = word.toLowerCase();
+
+    if (lowerWord === 'saas') {
+      return 'SaaS';
+    }
+
+    if (['api', 'ui', 'db', 's3', 'sla'].includes(lowerWord)) {
+      return lowerWord.toUpperCase();
+    }
+
+    return lowerWord.charAt(0).toUpperCase() + lowerWord.slice(1);
+  });
+
+  return titleCaseWords.join(' ');
+}
+
+export function buildStatusPageCopy(slug: string, monitors: Monitor[], incidents: Incident[]): StatusPageCopy {
+  const boardName = formatStatusBoardName(slug);
+  const copy = buildPublicStatusCopy(monitors, incidents);
+
+  return {
+    ...copy,
+    boardName,
+    slug: slug.trim() || 'status-board',
+    headline: `${boardName} — ${copy.headline}`,
+    body: copy.body,
   };
 }
 

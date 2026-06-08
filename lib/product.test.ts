@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
-  buildStatusSnapshot,
   buildIncidentBrief,
   buildPublicStatusCopy,
+  buildStatusPageCopy,
+  buildStatusSnapshot,
+  formatStatusBoardName,
   sampleIncidents,
   sampleMonitors,
 } from './product';
@@ -36,5 +38,23 @@ describe('buildPublicStatusCopy', () => {
     expect(copy.headline).toContain('operational');
     expect(copy.cta).toContain('subscribe');
     expect(copy.badges.length).toBeGreaterThan(0);
+  });
+});
+
+describe('formatStatusBoardName', () => {
+  it('turns a slug into a customer-friendly board name', () => {
+    expect(formatStatusBoardName('demo-saas')).toBe('Demo SaaS');
+    expect(formatStatusBoardName('  billing-api  ')).toBe('Billing API');
+    expect(formatStatusBoardName('')).toBe('Status Board');
+  });
+});
+
+describe('buildStatusPageCopy', () => {
+  it('adds a slug-aware title for public status pages', () => {
+    const copy = buildStatusPageCopy('demo-saas', sampleMonitors, sampleIncidents);
+
+    expect(copy.boardName).toBe('Demo SaaS');
+    expect(copy.headline).toContain('Demo SaaS');
+    expect(copy.body).toContain('tracking');
   });
 });

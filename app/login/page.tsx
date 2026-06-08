@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function LoginPage() {
   return (
     <main className="shell">
@@ -19,8 +21,12 @@ export default function LoginPage() {
           </label>
         </div>
         <div className="row" style={{ marginTop: 16 }}>
-          <a className="button" href="/app">Continue</a>
-          <a className="ghost" href="/">Back to marketing site</a>
+          <Link className="button" href="/app">
+            Continue
+          </Link>
+          <Link className="ghost" href="/">
+            Back to marketing site
+          </Link>
         </div>
       </section>
     </main>

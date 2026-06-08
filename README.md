@@ -1,75 +1,60 @@
 # Indie SaaS Status + Incident Desk
 
-Repo: `indie-saas-status-desk`
+A polished Next.js product slice for solo founders and small SaaS teams who need a trustworthy public status page and a clean internal incident workflow.
 
-## One-line pitch
-Launch a professional status page and incident desk in minutes.
+## What it includes
 
-## Buyer
-solo founders, micro-SaaS teams, agencies
+- Marketing landing page with trust-focused copy
+- Public status page at `/status/[slug]`
+- Internal dashboard at `/app`
+- Monitors, incidents, subscribers, settings, and login screens
+- Health endpoint at `/api/health`
+- Shared product logic in `lib/product.ts`
+- Vitest coverage for the core business logic
+- GitHub Actions CI for test, typecheck, lint, and build
 
-## Pain
-Customers need trust signals and founders need a clean incident workflow.
+## Stack
 
-## Monetization
-Subscription plus paid custom domains and extra monitors.
-
-## Differentiator
-Fast setup, beautiful public pages, and a simple incident postmortem workflow.
-
-## What ships in v1
-- Add monitor
-- Record uptime checks
-- Publish incident posts
-- Email subscribers
-- Custom branding and domain
-- Archive and search incidents
-
-## Screens
-- Public status page
-- Incident timeline
-- Subscriber settings
-- Monitor dashboard
-- Incident editor
-- Postmortem page
-- Admin settings
-
-## Routes
-- `/`
-- `/status/[slug]`
-- `/login`
-- `/app`
-- `/app/monitors`
-- `/app/incidents`
-- `/app/subscribers`
-- `/app/settings`
-
-## Deployment
-Vercel for app and public status pages, cron/worker for checks, Supabase/Neon for data, Stripe for subscriptions.
-
-## Launch checklist
-- Start with one excellent status page template
-- Add incident email templates
-- Include trust-copy for landing pages
-
-## v2
-- SMS alerts
-- API health checks
-- SLA reporting
-- Status widget embed
+- Next.js 15 App Router
+- React 19
+- TypeScript
+- Vitest
+- GitHub Actions
 
 ## Local development
+
 ```bash
 pnpm install
 pnpm dev
 ```
 
-## Environment variables
-Copy `.env.example` and fill in the provider keys for auth, storage, email, and billing.
+Open:
 
-## Files that matter
+- `http://localhost:3000`
+- `http://localhost:3000/status/demo-saas`
+- `http://localhost:3000/api/health`
+
+## Verification
+
+```bash
+pnpm test
+pnpm exec tsc --noEmit
+pnpm exec eslint .
+pnpm build
+```
+
+## Environment
+
+Copy `.env.example` to `.env.local` for real integrations later. The current demo runs without external services.
+
+## Deployment
+
+This repo is ready for Vercel deployment. Add real auth, billing, email, and database providers when moving beyond the demo data shipped here.
+
+## Key files
+
 - `app/page.tsx`
-- `app/app/page.tsx`
+- `app/status/[slug]/page.tsx`
 - `app/api/health/route.ts`
 - `lib/product.ts`
 - `.github/workflows/ci.yml`
