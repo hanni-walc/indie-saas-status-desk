@@ -1,19 +1,18 @@
-export default function RoutePage({ params }: { params: { key?: string; slug?: string; id?: string } }) {
-  const value = params.key ?? params.slug ?? params.id ?? "item";
+export default function RoutePage() {
   return (
     <main className="shell">
       <section className="frame hero">
         <p className="eyebrow">Route</p>
-        <h1>{"app / monitors"}</h1>
-        <p className="lead">{"Placeholder page for /app/monitors in the Indie SaaS Status + Incident Desk repo."}</p>
+        <h1>Page scaffold</h1>
+        <p className="lead">This route exists so the repo is structurally complete and ready for a real backend implementation.</p>
         <div className="row">
           <a className="button" href="/app">Back to dashboard</a>
-          <span className="ghost">{value}</span>
+          <a className="ghost" href="/">Open landing page</a>
         </div>
       </section>
       <section className="card">
         <p className="kicker">Implementation note</p>
-        <p className="muted">This route exists so the repo is structurally complete and ready for a real backend implementation.</p>
+        <p className="muted">Replace this scaffold with route-specific behavior, forms, or detail views as the product is implemented.</p>
       </section>
     </main>
   );
